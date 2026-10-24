@@ -1,0 +1,525 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Himanshu Store{% endblock %}</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f3f6;
+            color: #212121;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           TOP NAVBAR
+        ========================= */
+
+        .topbar {
+            background: #2874f0;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            max-width: 1400px;
+            margin: auto;
+            min-height: 64px;
+            padding: 8px 25px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .logo-area {
+            width: 145px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: white;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            font-style: italic;
+            color: #ffe500;
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .search-area {
+            flex: 1;
+            max-width: 700px;
+            position: relative;
+        }
+
+        .search-area form {
+            display: flex;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 42px;
+            border: none;
+            outline: none;
+            padding: 0 48px 0 16px;
+            font-size: 14px;
+            border-radius: 3px;
+            background: white;
+        }
+
+        .search-button {
+            width: 48px;
+            height: 42px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            border: none;
+            background: white;
+            color: #2874f0;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .nav-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 10px 12px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .cart-link {
+            font-size: 15px;
+        }
+
+        /* =========================
+           CATEGORY NAV
+        ========================= */
+
+        .category-bar {
+            background: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+        }
+
+        .category-inner {
+            max-width: 1400px;
+            margin: auto;
+            min-height: 52px;
+            padding: 0 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            overflow-x: auto;
+        }
+
+        .category-item {
+            min-width: max-content;
+            font-size: 13px;
+            font-weight: 700;
+            color: #212121;
+            padding: 17px 8px;
+        }
+
+        .category-item:hover {
+            color: #2874f0;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            min-height: calc(100vh - 170px);
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            margin-top: 40px;
+            background: #172337;
+            color: #aeb7c4;
+        }
+
+        .footer-grid {
+            max-width: 1400px;
+            margin: auto;
+            padding: 45px 25px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer h3 {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 17px;
+            text-transform: uppercase;
+        }
+
+        .footer p {
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .footer a {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 11px;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand span {
+            color: #2874f0;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            padding: 18px 20px;
+            font-size: 12px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        .mobile-menu {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                flex-wrap: wrap;
+                padding: 10px 15px;
+            }
+
+            .logo-area {
+                width: auto;
+            }
+
+            .search-area {
+                order: 3;
+                width: 100%;
+                max-width: none;
+            }
+
+            .nav-actions {
+                margin-left: auto;
+            }
+
+            .nav-link {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                gap: 10px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .logo-sub {
+                font-size: 9px;
+            }
+
+            .nav-actions {
+                gap: 2px;
+            }
+
+            .nav-link {
+                font-size: 11px;
+                padding: 7px 6px;
+            }
+
+            .category-inner {
+                padding: 0 12px;
+                justify-content: flex-start;
+            }
+
+            .category-item {
+                padding: 15px 8px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- TOP NAVBAR -->
+    <header class="topbar">
+
+        <div class="navbar">
+
+            <div class="logo-area">
+                <a href="{% url 'home' %}" class="logo">
+                    Himanshu Store
+                </a>
+
+                <div class="logo-sub">
+                    Explore <span style="color:#ffe500;">Plus</span> ✨
+                </div>
+            </div>
+
+            <!-- SEARCH -->
+            <div class="search-area">
+
+                <form method="get" action="{% url 'home' %}">
+
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ query|default:'' }}"
+                        class="search-input"
+                        placeholder="Search for products, brands and more"
+                    >
+
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
+                        🔍
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- NAV ACTIONS -->
+            <div class="nav-actions">
+
+                {% if request.user.is_authenticated %}
+
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}" class="nav-link">
+                        Login
+                    </a>
+
+                    <a href="{% url 'signup' %}" class="nav-link">
+                        Signup
+                    </a>
+
+                {% endif %}
+
+                <a href="{% url 'wishlist' %}" class="nav-link">
+                    ❤️
+                </a>
+
+                <a href="{% url 'cart' %}" class="nav-link cart-link">
+                    🛒 Cart
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- CATEGORY BAR -->
+    <div class="category-bar">
+
+        <div class="category-inner">
+
+            <a href="{% url 'home' %}" class="category-item">
+                🏠 Home
+            </a>
+
+            {% for category in categories %}
+
+                <a
+                    href="?category={{ category.id }}"
+                    class="category-item"
+                >
+                    {{ category.name }}
+                </a>
+
+            {% endfor %}
+
+            <a href="{% url 'my_orders' %}" class="category-item">
+                📦 Orders
+            </a>
+
+            <a href="{% url 'wishlist' %}" class="category-item">
+                ❤️ Wishlist
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN -->
+    <main>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="footer-grid">
+
+            <div>
+
+                <div class="footer-brand">
+                    Himanshu<span>Store</span>
+                </div>
+
+                <p>
+                    Your online shopping destination for
+                    electronics, fashion, footwear,
+                    accessories and more.
+                </p>
+
+                <br>
+
+                <p>
+                    Built using Python, Django, HTML, CSS
+                    and SQLite.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>About</h3>
+
+                <a href="{% url 'home' %}">
+                    Home
+                </a>
+
+                <a href="{% url 'my_orders' %}">
+                    My Orders
+                </a>
+
+                <a href="{% url 'wishlist' %}">
+                    Wishlist
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <h3>Help</h3>
+
+                <a href="#">
+                    Contact Us
+                </a>
+
+                <a href="#">
+                    FAQs
+                </a>
+
+                <a href="#">
+                    Shipping
+                </a>
+
+                <a href="#">
+                    Cancellation
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <h3>Account</h3>
+
+                <a href="{% url 'login' %}">
+                    Login
+                </a>
+
+                <a href="{% url 'signup' %}">
+                    Create Account
+                </a>
+
+                <a href="{% url 'admin:index' %}">
+                    Admin
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 Himanshu Store | All Rights Reserved
+        </div>
+
+    </footer>
+
+</body>
+</html>

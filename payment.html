@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block title %}Secure Payment | Himanshu Store{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .payment-page {
+        max-width: 850px;
+        margin: 45px auto;
+        padding: 20px;
+    }
+
+    .payment-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 24px;
+        padding: 45px;
+        box-shadow: 0 20px 55px rgba(15, 23, 42, 0.10);
+        text-align: center;
+    }
+
+    .payment-icon {
+        width: 85px;
+        height: 85px;
+        margin: 0 auto 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 24px;
+        background: #eff6ff;
+        font-size: 40px;
+    }
+
+    .payment-card h1 {
+        margin-bottom: 10px;
+        color: #111827;
+        font-size: 32px;
+    }
+
+    .payment-card > p {
+        color: #64748b;
+        margin-bottom: 30px;
+    }
+
+    .order-box {
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 25px;
+        text-align: left;
+    }
+
+    .order-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 9px 0;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .order-row:last-child {
+        border-bottom: none;
+    }
+
+    .order-label {
+        color: #64748b;
+    }
+
+    .order-value {
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .total {
+        font-size: 34px;
+        font-weight: 900;
+        color: #2563eb;
+        margin: 25px 0;
+    }
+
+    #pay-btn {
+        width: 100%;
+        border: none;
+        padding: 16px;
+        border-radius: 12px;
+        background: linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+        color: white;
+        font-size: 17px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    #pay-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+    }
+
+    .secure-text {
+        margin-top: 18px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+
+        .payment-card {
+            padding: 30px 20px;
+        }
+
+        .payment-card h1 {
+            font-size: 26px;
+        }
+
+        .order-row {
+            flex-direction: column;
+            gap: 3px;
+        }
+    }
+
+</style>
+
+
+<div class="payment-page">
+
+    <div class="payment-card">
+
+        <div class="payment-icon">
+            💳
+        </div>
+
+        <h1>
+            Secure Online Payment
+        </h1>
+
+        <p>
+            Complete your payment securely using Razorpay.
+        </p>
+
+        <div class="order-box">
+
+            <div class="order-row">
+                <span class="order-label">
+                    Order Number
+                </span>
+
+                <span class="order-value">
+                    #{{ order.id }}
+                </span>
+            </div>
+
+            <div class="order-row">
+                <span class="order-label">
+                    Customer
+                </span>
+
+                <span class="order-value">
+                    {{ order.name }}
+                </span>
+            </div>
+
+            <div class="order-row">
+                <span class="order-label">
+                    Payment Method
+                </span>
+
+                <span class="order-value">
+                    Online Payment
+                </span>
+            </div>
+
+        </div>
+
+        <div class="total">
+            ₹{{ order.total_amount }}
+        </div>
+
+        <button id="pay-btn">
+            Pay Now →
+        </button>
+
+        <div class="secure-text">
+            🔒 Secure payment powered by Razorpay
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+    const options = {
+
+        key: "{{ razorpay_key_id }}",
+
+        amount: "{{ amount }}",
+
+        currency: "INR",
+
+        name: "Himanshu Store",
+
+        description: "Order #{{ order.id }}",
+
+        order_id: "{{ razorpay_order_id }}",
+
+        handler: function (response) {
+
+            const form = document.createElement("form");
+
+            form.method = "POST";
+
+            form.action = "{% url 'payment_success' %}";
+
+
+            const csrf = document.createElement("input");
+
+            csrf.type = "hidden";
+
+            csrf.name = "csrfmiddlewaretoken";
+
+            csrf.value = "{{ csrf_token }}";
+
+            form.appendChild(csrf);
+
+
+            const paymentId = document.createElement("input");
+
+            paymentId.type = "hidden";
+
+            paymentId.name = "razorpay_payment_id";
+
+            paymentId.value =
+                response.razorpay_payment_id;
+
+            form.appendChild(paymentId);
+
+
+            const orderId = document.createElement("input");
+
+            orderId.type = "hidden";
+
+            orderId.name = "razorpay_order_id";
+
+            orderId.value =
+                response.razorpay_order_id;
+
+            form.appendChild(orderId);
+
+
+            const signature = document.createElement("input");
+
+            signature.type = "hidden";
+
+            signature.name = "razorpay_signature";
+
+            signature.value =
+                response.razorpay_signature;
+
+            form.appendChild(signature);
+
+
+            document.body.appendChild(form);
+
+            form.submit();
+        },
+
+
+        prefill: {
+
+            name: "{{ order.name }}",
+
+            email: "{{ order.email }}",
+
+            contact: "{{ order.phone }}"
+
+        },
+
+
+        theme: {
+
+            color: "#2563eb"
+
+        },
+
+
+        modal: {
+
+            ondismiss: function() {
+
+                console.log(
+                    "Razorpay checkout closed."
+                );
+
+            }
+
+        }
+
+    };
+
+
+    const razorpay = new Razorpay(options);
+
+
+    razorpay.on(
+        "payment.failed",
+        function(response) {
+
+            alert(
+                "Payment failed: "
+                + response.error.description
+            );
+
+        }
+    );
+
+
+    document
+        .getElementById("pay-btn")
+        .onclick = function(event) {
+
+            event.preventDefault();
+
+            razorpay.open();
+
+        };
+
+</script>
+
+{% endblock %}

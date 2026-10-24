@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Failed{% endblock %}
+
+{% block content %}
+
+<div style="
+    max-width: 650px;
+    margin: 70px auto;
+    padding: 20px;
+">
+
+    <div style="
+        background: white;
+        border-radius: 20px;
+        padding: 45px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        border: 1px solid #e5e7eb;
+    ">
+
+        <div style="
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #fee2e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+        ">
+            ❌
+        </div>
+
+        <h1 style="
+            color: #dc2626;
+            margin-bottom: 15px;
+        ">
+            Payment Failed
+        </h1>
+
+        <p style="
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        ">
+            Unfortunately, your online payment could not be completed.
+            Please check your Razorpay Test Mode credentials and try again.
+        </p>
+
+        {% if payment_error %}
+        <div style="
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        ">
+            {{ payment_error }}
+        </div>
+        {% endif %}
+
+        <div>
+            <a
+                href="{% url 'checkout' %}"
+                style="
+                    display: inline-block;
+                    padding: 13px 24px;
+                    background: #2563eb;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 10px;
+                    font-weight: 700;
+                    margin: 5px;
+                "
+            >
+                Try Again
+            </a>
+
+            <a
+                href="{% url 'home' %}"
+                style="
+                    display: inline-block;
+                    padding: 13px 24px;
+                    background: #111827;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 10px;
+                    font-weight: 700;
+                    margin: 5px;
+                "
+            >
+                Back to Home
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

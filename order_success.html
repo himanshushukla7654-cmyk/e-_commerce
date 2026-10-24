@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Order Successful - Himanshu Store{% endblock %}
+
+{% block extra_css %}
+<style>
+.success-box {
+    max-width: 650px;
+    margin: 60px auto;
+    background: white;
+    padding: 45px;
+    text-align: center;
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
+
+.success-icon {
+    font-size: 65px;
+    margin-bottom: 15px;
+}
+
+.success-box h1 {
+    margin-bottom: 10px;
+}
+
+.success-text {
+    color: #6b7280;
+    margin-bottom: 25px;
+}
+
+.order-info {
+    background: #f9fafb;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="success-box">
+
+        <div class="success-icon">
+            ✅
+        </div>
+
+        <h1>Order Placed Successfully!</h1>
+
+        <p class="success-text">
+            Thank you for shopping with Himanshu Store.
+        </p>
+
+        <div class="order-info">
+
+            <div class="row">
+                <span>Order ID</span>
+                <strong>#{{ order.id }}</strong>
+            </div>
+
+            <div class="row">
+                <span>Name</span>
+                <strong>{{ order.name }}</strong>
+            </div>
+
+            <div class="row">
+                <span>Payment</span>
+                <strong>{{ order.payment_method }}</strong>
+            </div>
+
+            <div class="row">
+                <span>Status</span>
+                <strong>{{ order.order_status }}</strong>
+            </div>
+
+            <div class="row">
+                <span>Total</span>
+                <strong>₹{{ order.total_amount }}</strong>
+            </div>
+
+        </div>
+
+        <a href="{% url 'my_orders' %}" class="btn btn-primary">
+            View My Orders
+        </a>
+
+        <a href="{% url 'home' %}" class="btn btn-dark">
+            Continue Shopping
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

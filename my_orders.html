@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders - Himanshu Store{% endblock %}
+
+{% block extra_css %}
+<style>
+.orders-title {
+    margin-bottom: 25px;
+}
+
+.order-card {
+    background: white;
+    border-radius: 15px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 5px 18px rgba(0,0,0,.07);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.order-id {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.status {
+    background: #fff7ed;
+    color: #c2410c;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.detail span {
+    display: block;
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.detail strong {
+    font-size: 15px;
+}
+
+.empty {
+    background: white;
+    text-align: center;
+    padding: 60px 20px;
+    border-radius: 15px;
+}
+
+@media(max-width:800px) {
+    .order-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .order-header {
+        gap: 10px;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="orders-title">
+        📦 My Orders
+    </h1>
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+            <div class="order-card">
+
+                <div class="order-header">
+
+                    <div class="order-id">
+                        Order #{{ order.id }}
+                    </div>
+
+                    <div class="status">
+                        {{ order.order_status }}
+                    </div>
+
+                </div>
+
+                <div class="order-details">
+
+                    <div class="detail">
+                        <span>Customer</span>
+                        <strong>{{ order.name }}</strong>
+                    </div>
+
+                    <div class="detail">
+                        <span>Payment</span>
+                        <strong>{{ order.payment_method }}</strong>
+                    </div>
+
+                    <div class="detail">
+                        <span>Payment Status</span>
+                        <strong>{{ order.payment_status }}</strong>
+                    </div>
+
+                    <div class="detail">
+                        <span>Total</span>
+                        <strong>₹{{ order.total_amount }}</strong>
+                    </div>
+
+                    <div class="detail">
+                        <span>City</span>
+                        <strong>{{ order.city }}</strong>
+                    </div>
+
+                    <div class="detail">
+                        <span>Phone</span>
+                        <strong>{{ order.phone }}</strong>
+                    </div>
+
+                    <div class="detail">
+                        <span>Date</span>
+                        <strong>{{ order.created_at|date:"d M Y" }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No Orders Yet 📦</h2>
+
+            <p style="margin-top:10px;">
+                You haven't placed any orders yet.
+            </p>
+
+            <br>
+
+            <a href="{% url 'home' %}" class="btn btn-primary">
+                Start Shopping
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
